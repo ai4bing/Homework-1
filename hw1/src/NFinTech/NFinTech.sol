@@ -120,18 +120,14 @@ contract NFinTech is IERC721 {
         emit Transfer(from, to, tokenId);
     }
 
-    function isContract(address account) internal view returns (bool) {
-        uint256 size;
-        assembly {
-            size := extcodesize(account)
-        }
-        return size > 0;
-    }
-
     function safeTransferFrom(address from, address to, uint256 tokenId, bytes calldata data) public {
         // TODO: please add your implementaiton here
+        uint256 size;
+        assembly {
+            size := extcodesize(to)
+        }
         transferFrom(from, to, tokenId);
-        if (isContract(to)) {
+        if (size > 0) {
             bytes4 retval = IERC721TokenReceiver(to).onERC721Received(msg.sender, from, tokenId, data);
             require(retval == IERC721TokenReceiver.onERC721Received.selector);
         }
@@ -141,8 +137,12 @@ contract NFinTech is IERC721 {
 
     function safeTransferFrom(address from, address to, uint256 tokenId) public {
         // TODO: please add your implementaiton here
+        uint256 size;
+        assembly {
+            size := extcodesize(to)
+        }
         transferFrom(from, to, tokenId);
-        if (isContract(to)) {
+        if (size > 0) {
             bytes4 retval = IERC721TokenReceiver(to).onERC721Received(msg.sender, from, tokenId, "");
             require(retval == IERC721TokenReceiver.onERC721Received.selector);
         }
