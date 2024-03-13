@@ -82,9 +82,8 @@ contract LiaoToken is IERC20 {
 
     function approve(address spender, uint256 amount) external returns (bool) {
         // TODO: please add your implementaiton here
-        address owner = msg.sender;
-        _allowances[owner][spender] = amount;
-        emit Approval(owner, spender, amount);
+        _allowances[msg.sender][spender] = amount;
+        emit Approval(msg.sender, spender, amount);
         return true;
     }
 
