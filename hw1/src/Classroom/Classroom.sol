@@ -23,7 +23,8 @@ interface IClassroomV2 {
 contract StudentV2 {
     function register() external view returns (uint256) {
         // TODO: please add your implementaiton here
-        address class2 = 0x2e234DAe75C793f67A35089C9d99245E1C58470b;
+        address class2 = msg.sender;
+
         if (!IClassroomV2(class2).isEnrolled()) {
             return 1000;
         } else {

